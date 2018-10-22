@@ -16,9 +16,17 @@ public class StaticFactoryMethod {
         // 2. it's possible to create methods with the same param list
         Box.ofMinimalNumber(1, 2, 3);
         Box.ofMaximumNumber(1, 2, 3);
+
+        // 3. it's possible to control whether create new instances or not
+        Box.ofMinimumNumber();
+        Box.ofMaximumNumber();
     }
 
     private static class Box<T> {
+
+        private static final Box<Integer> withMinimumNumber = new Box<>(Integer.MIN_VALUE);
+        private static final Box<Integer> withMaximumNumber = new Box<>(Integer.MAX_VALUE);
+
         private T item;
 
         public Box(T item) {
@@ -91,6 +99,21 @@ public class StaticFactoryMethod {
                     .orElseThrow(() -> new IllegalStateException("Failed to find maximum number"));
 
             return new Box<>(maximumNumber);
+        }
+
+        /**
+         * It's also possible to control creation of new instances.
+         * Method actually never created new instance of a class.
+         */
+        public static Box<Integer> ofMinimumNumber() {
+            return withMinimumNumber;
+        }
+
+        /**
+         * The same as {@link #ofMinimumNumber()} - new instance is never created
+         */
+        public static Box<Integer> ofMaximumNumber() {
+            return withMaximumNumber;
         }
 
         public T getItem() {

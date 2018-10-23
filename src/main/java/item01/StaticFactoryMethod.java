@@ -1,4 +1,4 @@
-package chapter02;
+package item01;
 
 import java.util.Arrays;
 
@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class StaticFactoryMethod {
 
     public static void main(String[] args) {
+        // Advantages:
         // 1. static factory methods have names:
         Box.ofNumber(1);
         Box.ofLetter('A');
@@ -20,16 +21,33 @@ public class StaticFactoryMethod {
         // 3. it's possible to control whether create new instances or not
         Box.ofMinimumNumber();
         Box.ofMaximumNumber();
+
+        // 4. it's possible to return any sub-type of declared return type
+        Container<Boolean> container = Container.construct(true);
+
+        // 5. returned class need not exist when the factory method is written:
+        // as an example: JDBC is based on that principle
+
+        // Disadvantages:
+        // 1. Classes without plain public or protected constructors cannot be subclassed
+        /*
+        class LittleBox<T> extends Box<T> {
+            // no default constructor available
+        }
+        */
+
+        // 2. Static factories do not stand out in API documentation
+        // Therefore some conventional prefixes are used: 'of', 'from', 'newType', 'getType', etc...
     }
 
-    private static class Box<T> {
+    private static class Box<T> implements Container<T> {
 
         private static final Box<Integer> withMinimumNumber = new Box<>(Integer.MIN_VALUE);
         private static final Box<Integer> withMaximumNumber = new Box<>(Integer.MAX_VALUE);
 
         private T item;
 
-        public Box(T item) {
+        private Box(T item) {
             this.item = item;
         }
 
@@ -116,8 +134,17 @@ public class StaticFactoryMethod {
             return withMaximumNumber;
         }
 
+        @Override
         public T getItem() {
             return item;
+        }
+    }
+
+    public interface Container<T> {
+        T getItem();
+
+        static <U> Container<U> construct(U item) {
+            return new Box<>(item);
         }
     }
 }

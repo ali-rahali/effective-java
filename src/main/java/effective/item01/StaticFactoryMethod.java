@@ -1,4 +1,4 @@
-package item01;
+package effective.item01;
 
 import java.util.Arrays;
 

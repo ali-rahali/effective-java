@@ -1,4 +1,4 @@
-package item02;
+package effective.item02;
 
 /**
  * Static factory methods as well as plain constructors share the same

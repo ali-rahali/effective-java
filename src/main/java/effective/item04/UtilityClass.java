@@ -1,4 +1,4 @@
-package item04;
+package effective.item04;
 
 /**
  * There're type of classes which contain only static fields and methods and therefore

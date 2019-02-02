@@ -1,4 +1,4 @@
-package item03;
+package effective.item03;
 
 /**
  * Singleton - a class which is instantiated exactly once
